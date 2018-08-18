@@ -1,0 +1,76 @@
+version: '3.3'
+
+networks:
+  www-external:
+    internal: false
+  www-internal:
+    internal: true
+
+services:
+  elasticsearch:
+    image: triberay/elasticsearch-4-liferay
+    networks:
+     - "www-external"
+     - "www-internal"
+    ports:
+     - "9200:9200"
+     - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  httpd:
+    image: triberay/httpd-4-liferay
+    networks:
+      - "www-external"
+      - "www-internal"
+    ports:
+      - "80:80"
+      - "443:443"
+  mockmock:
+    image: triberay/mockmock-4-liferay
+    networks:
+      - "www-external"
+      - "www-internal"
+    expose:
+      - "25"
+    ports:
+      - "8282:8282"
+  liferay:
+    image: triberay/liferay-portal
+    depends_on:
+     - "postgres"
+    networks:
+      - "www-external"
+      - "www-internal"
+    ports:
+      - "8000:8000"
+      - "11311:11311"
+      - "12345:12345"
+    environment:
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_lass_UPPERCASEN_ame=org.postgresql.Driver
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=liferay
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=passw0rd
+    volumes:
+      - "./configs/dev:/docker-init.d/config"
+      - ${LIFERAY_BUNDLE_DIR}/deploy:/opt/liferay/deploy
+      - ${LIFERAY_BUNDLE_DIR}/osgi/configs:/opt/liferay/osgi/configs
+      - ${LIFERAY_BUNDLE_DIR}/osgi/modules:/opt/liferay/osgi/modules
+      - ${LIFERAY_BUNDLE_DIR}/osgi/war:/opt/liferay/osgi/war
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=passw0rd
+      - POSTGRES_USER=liferay
+      - POSTGRES_DB=lportal
+    networks:
+      - "www-external"
+      - "www-internal"
+    ports:
+      - "5433:5432"
+
+volumes:
+  liferay:
