@@ -1,0 +1,4 @@
+Bundle-Name: triberay-docker-info-portlet
+Bundle-SymbolicName: com.triberay.docker.info.portlet
+Bundle-Version: 1.0.0
+Export-Package: com.triberay.docker.info.constants

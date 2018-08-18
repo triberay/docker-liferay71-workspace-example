@@ -1,0 +1,19 @@
+{
+  "layoutTemplateId": "1_column",
+  "publicPages": [
+    {
+      "friendlyURL": "/home",
+      "name": "Triberay Docker Example Setup",
+      "title": "Triberay Docker Example Setup",
+      "typeSettings": "lfr-theme:regular:regularInheritLookAndFeel=false",
+      "inheritLookAndFeel": "false",
+      "columns": [
+        [
+          {
+            "portletId": "triberaydockerinfo"
+          }
+        ]
+      ]
+    }
+  ]
+}
