@@ -1,4 +1,13 @@
 language: java
-sudo: false
 jdk:
-- oraclejdk8
+ - oraclejdk8
+
+sudo: required
+
+services:
+ - docker
+  
+script:
+ - "./gradlew check"
+ - "./gradlew startDockerEnv"
+ - "./gradlew stopDockerEnv"
