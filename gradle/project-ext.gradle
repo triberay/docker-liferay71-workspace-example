@@ -11,4 +11,8 @@ project.ext {
     dockerContainerPrefix = project.hasProperty('liferay.docker.container.prefix') ?
             (project.getProperty('liferay.docker.container.prefix')) :
             ('triberay')
+
+    dockerComposeExecutable = project.hasProperty('liferay.docker.compose.executable') ?
+            (project.getProperty('liferay.docker.compose.executable')) :
+            ("docker-compose")
 }

@@ -21,10 +21,8 @@ class DockerCompose extends DefaultTask {
     private void _setDefaultAgruments() {
 
         dockerComposeArguments = [
-                '-p',
-                project.dockerContainerPrefix,
-                '-f',
-                project.dockerComposeFilePath
+                '-p', project.dockerContainerPrefix,
+                '-f', project.dockerComposeFilePath
         ]
     }
 
@@ -42,7 +40,7 @@ class DockerCompose extends DefaultTask {
     public void dockerCompose() {
 
         project.exec {
-            executable 'docker-compose'
+            executable project.dockerComposeExecutable
             args dockerComposeArguments
             environment dockerComposeEnvironment
         }
@@ -54,7 +52,7 @@ task startDockerEnv(
     group: 'docker',
     type: DockerCompose
 ) {
-    args('up', '--force-recreate', '-d')
+    args('up', '-d')
 }
 
 task stopDockerEnv(

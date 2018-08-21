@@ -7,18 +7,53 @@ networks:
     internal: true
 
 services:
+  liferay:
+    image: triberay/liferay-portal
+    depends_on:
+     - "postgres"
+    networks:
+      - "www-external"
+      - "www-internal"
+    ports:
+      - "8000:8000"
+      - "11311:11311"
+      - "8099:12345"
+    environment:
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_lass_UPPERCASEN_ame=org.postgresql.Driver
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=liferay
+      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=passw0rd
+    volumes:
+      - "./configs/dev:/docker-init.d/config"
+      - ${LIFERAY_BUNDLE_DIR}/deploy:/opt/liferay/deploy
+      - ${LIFERAY_BUNDLE_DIR}/osgi/configs:/opt/liferay/osgi/configs
+      - ${LIFERAY_BUNDLE_DIR}/osgi/modules:/opt/liferay/osgi/modules
+      - ${LIFERAY_BUNDLE_DIR}/osgi/war:/opt/liferay/osgi/war
   elasticsearch:
     image: triberay/elasticsearch-4-liferay
     networks:
-     - "www-external"
-     - "www-internal"
+      - "www-external"
+      - "www-internal"
     ports:
      - "9200:9200"
      - "9300:9300"
+    environment:
+      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
     ulimits:
       memlock:
         soft: -1
         hard: -1
+  postgres:
+    image: postgres
+    networks:
+      - "www-external"
+      - "www-internal"
+    environment:
+      - POSTGRES_PASSWORD=passw0rd
+      - POSTGRES_USER=liferay
+      - POSTGRES_DB=lportal
+    ports:
+      - "5433:5432"
   httpd:
     image: triberay/httpd-4-liferay
     networks:
@@ -36,39 +71,37 @@ services:
       - "25"
     ports:
       - "8282:8282"
-  liferay:
-    image: triberay/liferay-portal
+  selenium-hub:
+    image: selenium/hub:3.14.0-arsenic
+    networks:
+      - "www-external"
+      - "www-internal"
+    ports:
+      - "4444:4444"
+  chrome:
+    image: selenium/node-chrome-debug:3.14.0-arsenic
     depends_on:
-     - "postgres"
+      - selenium-hub
     networks:
       - "www-external"
       - "www-internal"
     ports:
-      - "8000:8000"
-      - "11311:11311"
-      - "12345:12345"
+     - "5900:5900"
     environment:
-      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_lass_UPPERCASEN_ame=org.postgresql.Driver
-      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
-      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_USERNAME=liferay
-      - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_PASSWORD=passw0rd
-    volumes:
-      - "./configs/dev:/docker-init.d/config"
-      - ${LIFERAY_BUNDLE_DIR}/deploy:/opt/liferay/deploy
-      - ${LIFERAY_BUNDLE_DIR}/osgi/configs:/opt/liferay/osgi/configs
-      - ${LIFERAY_BUNDLE_DIR}/osgi/modules:/opt/liferay/osgi/modules
-      - ${LIFERAY_BUNDLE_DIR}/osgi/war:/opt/liferay/osgi/war
-  postgres:
-    image: postgres
-    environment:
-      - POSTGRES_PASSWORD=passw0rd
-      - POSTGRES_USER=liferay
-      - POSTGRES_DB=lportal
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
+  firefox:
+    image: selenium/node-firefox-debug:3.14.0-arsenic
+    depends_on:
+      - selenium-hub
     networks:
       - "www-external"
       - "www-internal"
     ports:
-      - "5433:5432"
+     - "5901:5900"
+    environment:
+      - HUB_HOST=selenium-hub
+      - HUB_PORT=4444
 
 volumes:
   liferay:
