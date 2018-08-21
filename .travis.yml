@@ -10,7 +10,7 @@ services:
 before_script:
   - "./gradlew deploy"
   - "./gradlew startDockerEnv"
-  - sleep 60
+  - sleep 200
 
 script:
  - "./gradlew check"

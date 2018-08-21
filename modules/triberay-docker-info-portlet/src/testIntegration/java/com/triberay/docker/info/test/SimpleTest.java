@@ -28,7 +28,7 @@ public class SimpleTest extends TestCase {
         capabilities.setBrowserName("firefox");
 
         driver = new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), capabilities);
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
     }
 
     @Test
