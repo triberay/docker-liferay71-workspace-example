@@ -8,6 +8,7 @@ services:
  - docker
   
 script:
- - "./gradlew check"
+ - "./gradlew deploy"
  - "./gradlew startDockerEnv"
+ - "./gradlew check"
  - "./gradlew stopDockerEnv"
