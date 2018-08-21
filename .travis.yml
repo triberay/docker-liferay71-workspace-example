@@ -6,9 +6,14 @@ sudo: required
 
 services:
  - docker
-  
+
+before_script:
+  - "./gradlew startDockerEnv"
+  - sleep 60
+
 script:
  - "./gradlew deploy"
- - "./gradlew startDockerEnv"
  - "./gradlew check"
+
+
  - "./gradlew stopDockerEnv"
