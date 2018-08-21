@@ -12,6 +12,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -28,16 +30,17 @@ public class SimpleTest extends TestCase {
         capabilities.setBrowserName("firefox");
 
         driver = new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), capabilities);
-        driver.manage().timeouts().implicitlyWait(100, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
     @Test
     public void testSimple() {
         this.driver.get("http://httpd");
 
-        String body = this.driver.findElement(By.tagName("body")).getText();
+        WebDriverWait wait = new WebDriverWait(driver, 20 * 1000, 200);
+        wait.until(ExpectedConditions.titleIs("Triberay Docker Example Setup - Liferay"));
 
-        Assert.assertEquals("Triberay Docker Example Setup - Liferay", this.driver.getTitle());
+        String body = this.driver.findElement(By.tagName("body")).getText();
         Assert.assertTrue("The portlet is not well deployed", body.contains("Hello from Triberay Docker Info!"));
     }
 
