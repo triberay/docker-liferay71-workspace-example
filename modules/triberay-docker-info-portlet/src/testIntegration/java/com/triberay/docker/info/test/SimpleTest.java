@@ -37,7 +37,7 @@ public class SimpleTest extends TestCase {
     public void testSimple() {
         this.driver.get("http://httpd");
 
-        WebDriverWait wait = new WebDriverWait(driver, 7 * 60, 200);
+        WebDriverWait wait = new WebDriverWait(driver, 10 * 60, 200);
         wait.until(ExpectedConditions.titleContains("Liferay"));
 
         String body = this.driver.findElement(By.tagName("body")).getText();
