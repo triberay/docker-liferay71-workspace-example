@@ -27,7 +27,7 @@ public class SimpleTest extends TestCase {
     @Before
     public void setUp() throws MalformedURLException {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setBrowserName("firefox");
+        capabilities.setBrowserName("chrome");
 
         driver = new RemoteWebDriver(URI.create("http://127.0.0.1:4444/wd/hub").toURL(), capabilities);
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
@@ -37,8 +37,8 @@ public class SimpleTest extends TestCase {
     public void testSimple() {
         this.driver.get("http://httpd");
 
-        WebDriverWait wait = new WebDriverWait(driver, 20 * 1000, 200);
-        wait.until(ExpectedConditions.titleIs("Triberay Docker Example Setup - Liferay"));
+        WebDriverWait wait = new WebDriverWait(driver, 7 * 60, 200);
+        wait.until(ExpectedConditions.titleContains("Liferay"));
 
         String body = this.driver.findElement(By.tagName("body")).getText();
         Assert.assertTrue("The portlet is not well deployed", body.contains("Hello from Triberay Docker Info!"));

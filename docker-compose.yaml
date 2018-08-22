@@ -29,20 +29,20 @@ services:
       - ${LIFERAY_BUNDLE_DIR}/osgi/configs:/opt/liferay/osgi/configs
       - ${LIFERAY_BUNDLE_DIR}/osgi/modules:/opt/liferay/osgi/modules
       - ${LIFERAY_BUNDLE_DIR}/osgi/war:/opt/liferay/osgi/war
-  elasticsearch:
-    image: triberay/elasticsearch-4-liferay
-    networks:
-      - "www-external"
-      - "www-internal"
-    ports:
-     - "9200:9200"
-     - "9300:9300"
-    environment:
-      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
-    ulimits:
-      memlock:
-        soft: -1
-        hard: -1
+#  elasticsearch:
+#    image: triberay/elasticsearch-4-liferay
+#    networks:
+#      - "www-external"
+#      - "www-internal"
+#    ports:
+#     - "9200:9200"
+#     - "9300:9300"
+#    environment:
+#      ES_JAVA_OPTS: "-Xmx2048m -Xms2048m"
+#    ulimits:
+#      memlock:
+#        soft: -1
+#        hard: -1
   postgres:
     image: postgres
     networks:
@@ -62,15 +62,15 @@ services:
     ports:
       - "80:80"
       - "443:443"
-  mockmock:
-    image: triberay/mockmock-4-liferay
-    networks:
-      - "www-external"
-      - "www-internal"
-    expose:
-      - "25"
-    ports:
-      - "8282:8282"
+#  mockmock:
+#    image: triberay/mockmock-4-liferay
+#    networks:
+#      - "www-external"
+#      - "www-internal"
+#    expose:
+#      - "25"
+#    ports:
+#      - "8282:8282"
   selenium-hub:
     image: selenium/hub:3.14.0-arsenic
     networks:
@@ -90,18 +90,18 @@ services:
     environment:
       - HUB_HOST=selenium-hub
       - HUB_PORT=4444
-  firefox:
-    image: selenium/node-firefox-debug:3.14.0-arsenic
-    depends_on:
-      - selenium-hub
-    networks:
-      - "www-external"
-      - "www-internal"
-    ports:
-     - "5901:5900"
-    environment:
-      - HUB_HOST=selenium-hub
-      - HUB_PORT=4444
+#  firefox:
+#    image: selenium/node-firefox-debug:3.14.0-arsenic
+#    depends_on:
+#      - selenium-hub
+#    networks:
+#      - "www-external"
+#      - "www-internal"
+#    ports:
+#     - "5901:5900"
+#    environment:
+#      - HUB_HOST=selenium-hub
+#      - HUB_PORT=4444
 
 volumes:
   liferay:
