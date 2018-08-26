@@ -17,7 +17,7 @@ services:
     ports:
       - "8000:8000"
       - "11311:11311"
-      - "8099:12345"
+      - "12345:12345"
     environment:
       - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_DRIVER_UPPERCASEC_lass_UPPERCASEN_ame=org.postgresql.Driver
       - LIFERAY_JDBC_PERIOD_DEFAULT_PERIOD_URL=jdbc:postgresql://postgres:5432/lportal
