@@ -4,7 +4,9 @@ buildscript {
         classpath group: "com.triberay", name: "com.triberay.gradle.plugins.liferay-docker", version: "0.1"
     }
     repositories {
-        mavenLocal()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
 }
 
