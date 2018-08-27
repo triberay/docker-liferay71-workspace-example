@@ -1,14 +1,14 @@
 
 buildscript {
     dependencies {
-        classpath group: "com.triberay", name: "gradle-liferay-docker-plugin", version: "0.1"
+        classpath group: "com.triberay", name: "com.triberay.gradle.plugins.liferay-docker", version: "0.1"
     }
     repositories {
         mavenLocal()
     }
 }
 
-apply plugin: "gradle-liferay-docker-plugin"
+apply plugin: "com.triberay.gradle.plugins.liferay-docker"
 
 liferayDocker {
     dockerComposeFilePath = "docker-compose.yaml"
